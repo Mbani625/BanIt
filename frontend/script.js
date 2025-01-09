@@ -162,9 +162,23 @@ async function displayLeaderboard(format) {
     const response = await fetch(`http://localhost:3000/leaderboard/${format}`);
     const leaderboardData = await response.json();
 
+    // Create a format container for each format
     const formatContainer = document.createElement("div");
     formatContainer.className = "format-leaderboard";
-    formatContainer.innerHTML = `<h2>${format} Leaderboard</h2>`;
+
+    // Create the format heading and add the "No Changes" button with tally next to it
+    const noChangesTally = leaderboardData.noChangesTally || 0; // Default to 0 if not set
+    const headingHtml = `
+        <h2>${format} Leaderboard
+          <button id="noChangesButton-${format}" class="no-changes">
+            No Changes: <span id="noChangesTally-${format}">${noChangesTally}</span>
+          </button>
+        </h2>
+      `;
+    formatContainer.innerHTML = headingHtml;
+
+    const leaderboard = document.createElement("div");
+    leaderboard.className = "leaderboard";
 
     if (!leaderboardData || Object.keys(leaderboardData).length === 0) {
       formatContainer.innerHTML += "<p>No votes yet.</p>";
@@ -198,7 +212,7 @@ async function displayLeaderboard(format) {
                 `;
           }
         } else if (cardData.card_faces) {
-          // For double-faced cards, show only the front face initially
+          // For double-faced cards, show the front face initially
           const frontFaceImageUrl = cardData.card_faces[0].image_uris
             ? cardData.card_faces[0].image_uris.normal
             : null;
@@ -211,7 +225,7 @@ async function displayLeaderboard(format) {
               `;
           }
 
-          // Show both faces
+          // Show both faces on hover
           const backFaceImageUrl = cardData.card_faces[1]?.image_uris
             ? cardData.card_faces[1].image_uris.normal
             : null;
@@ -236,18 +250,54 @@ async function displayLeaderboard(format) {
         const cardDiv = document.createElement("div");
         cardDiv.className = "card";
         cardDiv.innerHTML = `
-              <div class=cardName><strong>${cardName}</strong></div>
+              <strong>${cardName}</strong>
               ${cardImageHtml}
               <div class="ban-counter">
                 Ban Counter: ${data.votes} votes
               </div>
-              ${data.isBanned ? '<span class="banned">(Banned)</span>' : ""}
             `;
-        formatContainer.appendChild(cardDiv);
+        leaderboard.appendChild(cardDiv);
       }
     }
 
-    leaderboard.appendChild(formatContainer);
+    // Append the leaderboard to the format container
+    formatContainer.appendChild(leaderboard);
+
+    // Append the format container to the leaderboard section
+    const leaderboardSection = document.getElementById("leaderboard");
+    leaderboardSection.appendChild(formatContainer);
+
+    // Add event listeners for "No Changes" button
+    const noChangesButton = document.getElementById(
+      `noChangesButton-${format}`
+    );
+    const noChangesTallyElement = document.getElementById(
+      `noChangesTally-${format}`
+    );
+
+    noChangesButton.addEventListener("click", () => {
+      let tally = parseInt(noChangesTallyElement.innerText, 10) || 0;
+      tally++;
+
+      // Update the tally
+      noChangesTallyElement.innerText = tally;
+
+      // Optionally, store the tally in localStorage or database
+      // localStorage.setItem(format, tally);
+    });
+
+    // Handle form submission and clear the card name input field
+    const voteForm = document.getElementById("voteForm");
+    const cardNameInput = document.getElementById("cardName");
+
+    voteForm.addEventListener("submit", (event) => {
+      // Prevent form submission (default behavior)
+      event.preventDefault();
+
+      // Here, you would normally handle submitting the vote.
+      // For now, we're just clearing the input field after the submit.
+      cardNameInput.value = ""; // Clear the input field after submission
+    });
   } catch (error) {
     console.error(`Error fetching leaderboard for ${format}:`, error);
   }

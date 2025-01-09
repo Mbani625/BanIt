@@ -56,6 +56,7 @@ button:hover {
 
 .leaderboard {
   margin-top: 20px;
+  justify-content: center;
 }
 
 .card-image {
@@ -132,4 +133,46 @@ button:hover {
 
 .split-name {
   font-size: 18px;
+}
+
+/* Add styling for the "No Changes" button and tally */
+.no-changes {
+  background-color: #007bff;
+  color: white;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-left: 20px;
+}
+
+.no-changes:hover {
+  background-color: #0056b3;
+}
+
+.no-changes-tally {
+  font-weight: bold;
+  margin-left: 5px;
+}
+
+/* Add styling for the tally buttons */
+.tally-buttons {
+  margin-top: 10px;
+  text-align: center;
+}
+
+.tally-buttons button {
+  background-color: #28a745;
+  color: white;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  margin: 0 5px;
+}
+
+.tally-buttons button:hover {
+  background-color: #218838;
 }
