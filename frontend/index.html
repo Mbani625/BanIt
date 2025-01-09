@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MTG Ban Tracker</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>MTG Ban Tracker</h1>
+
+        <form id="voteForm">
+            <label for="cardName">Card Name</label>
+            <input type="text" id="cardName" name="cardName" list="cardSuggestions" autocomplete="off" required>
+            <datalist id="cardSuggestions"></datalist>
+
+
+            <label for="format">Format</label>
+            <select id="format" name="format">
+                <option value="Standard">Standard</option>
+                <option value="Modern">Modern</option>
+                <option value="Legacy">Legacy</option>
+                <option value="Pioneer">Pioneer</option>
+                <option value="Historic">Historic</option>
+                <option value="Vintage">Vintage</option>
+                <option value="Commander">Commander</option>
+            </select>
+
+            <button type="submit">Add Vote</button>
+        </form>
+        <button id="resetButton">Reset Leaderboards</button>
+
+        <div class="leaderboard" id="leaderboard">
+            <h2>Leaderboard</h2>
+            <p>Select a format to see the leaderboard.</p>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
+
