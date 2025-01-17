@@ -15,28 +15,47 @@
             <input type="text" id="cardName" name="cardName" list="cardSuggestions" autocomplete="off" required>
             <datalist id="cardSuggestions"></datalist>
 
-
             <label for="format">Format</label>
             <select id="format" name="format">
                 <option value="Standard">Standard</option>
                 <option value="Modern">Modern</option>
                 <option value="Legacy">Legacy</option>
-                <option value="Pioneer">Pioneer</option>
-                <option value="Historic">Historic</option>
-                <option value="Vintage">Vintage</option>
                 <option value="Commander">Commander</option>
+                <option value="Vintage">Vintage</option>
             </select>
 
             <button type="submit">Add Vote</button>
         </form>
         <button id="resetButton">Reset Leaderboards</button>
 
-        <div class="leaderboard" id="leaderboard">
-            <h2>Leaderboard</h2>
-            <p>Select a format to see the leaderboard.</p>
+        <div id="leaderboard">
+            <!-- Collapsible sections for formats -->
+            <div class="format-container" id="Standard">
+                <h2 class="format-title" data-format="Standard">Standard (0 cards, 0 votes)</h2>
+                <div class="format-content" style="display: none;"></div>
+            </div>
+            <div class="format-container" id="Modern">
+                <h2 class="format-title" data-format="Modern">Modern (0 cards, 0 votes)</h2>
+                <div class="format-content" style="display: none;"></div>
+            </div>
+            <div class="format-container" id="Legacy">
+                <h2 class="format-title" data-format="Legacy">Legacy (0 cards, 0 votes)</h2>
+                <div class="format-content" style="display: none;"></div>
+            </div>
+            <div class="format-container" id="Commander">
+                <h2 class="format-title" data-format="Commander">Commander (0 cards, 0 votes)</h2>
+                <div class="format-content" style="display: none;"></div>
+            </div>
+            <div class="format-container" id="Vintage">
+                <h2 class="format-title" data-format="Vintage">Vintage (0 cards, 0 votes)</h2>
+                <div class="format-content" style="display: none;"></div>
+            </div>
         </div>
+        
     </div>
+
     <script src="script.js"></script>
 </body>
 </html>
+
 

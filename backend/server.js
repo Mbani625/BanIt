@@ -28,19 +28,21 @@ async function updateBanlist() {
         });
 
         // Assuming the API contains banlist data in a specific structure
-        Object.keys(data.banlist).forEach(format => {
+        Object.keys(data.banlist || {}).forEach(format => {
             if (formats.includes(format)) {
                 data.banlist[format].forEach(card => {
                     banlist[format].add(card);
                 });
             }
         });
+
+        console.log('Banlist updated successfully.');
     } catch (error) {
-        console.error('Error fetching banlist:', error);
+        console.error('Error fetching banlist:', error.message);
     }
 }
 
-// Initial fetch of banlist
+// Initial fetch of the banlist
 updateBanlist();
 
 // Route to add a card vote
@@ -62,17 +64,20 @@ app.post('/add-vote', (req, res) => {
 
     // Increment the vote count
     if (!cardVotes[format][cardName]) {
-        cardVotes[format][cardName] = { votes: 0, isBanned: banlist[format].has(cardName) };
+        cardVotes[format][cardName] = { votes: 0, isBanned: banlist[format]?.has(cardName) || false };
     }
 
     cardVotes[format][cardName].votes++;
 
-    // Sort cards by votes
-    cardVotes[format] = Object.fromEntries(
-        Object.entries(cardVotes[format]).sort(([, a], [, b]) => b.votes - a.votes)
-    );
-
-    res.json({ message: 'Vote added successfully.', leaderboard: cardVotes[format] });
+    res.json({
+        message: 'Vote added successfully.',
+        leaderboard: Object.entries(cardVotes[format])
+            .sort(([, a], [, b]) => b.votes - a.votes)
+            .reduce((acc, [cardName, data]) => {
+                acc[cardName] = data;
+                return acc;
+            }, {})
+    });
 });
 
 // Route to get the leaderboard for a format
@@ -86,7 +91,7 @@ app.get('/leaderboard/:format', (req, res) => {
     res.json(cardVotes[format] || {});
 });
 
-// Route to refresh banlist manually
+// Route to refresh the banlist manually
 app.post('/refresh-banlist', async (req, res) => {
     try {
         await updateBanlist();
@@ -96,11 +101,6 @@ app.post('/refresh-banlist', async (req, res) => {
     }
 });
 
-// Start the server
-app.listen(port, () => {
-    console.log(`Server running at http://localhost:${port}`);
-});
-
 // Route to reset all votes
 app.post('/reset', (req, res) => {
     Object.keys(cardVotes).forEach(format => {
@@ -108,3 +108,9 @@ app.post('/reset', (req, res) => {
     });
     res.json({ message: 'All votes have been reset.' });
 });
+
+// Start the server
+app.listen(port, () => {
+    console.log(`Server running at http://localhost:${port}`);
+});
+

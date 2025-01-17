@@ -48,20 +48,59 @@ button {
 button:hover {
     background-color: #0056b3;
 }
+.format-title {
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1.2em;
+    margin: 10px 0;
+    background-color: #e9ecef;
+    padding: 10px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
 
-.leaderboard {
-    margin-top: 20px;
+.format-title:hover {
+    background-color: #ced4da;
+}
+
+.format-content {
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f8f9fa;
 }
 
 .card {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    width: 200px;
+    margin: 10px;
     padding: 10px;
     border: 1px solid #ddd;
-    margin-bottom: 10px;
     border-radius: 4px;
     background-color: #f9f9f9;
 }
 
-.banned {
-    color: red;
-    font-weight: bold;
+.card-image-container {
+    margin-bottom: 10px;
+}
+
+.card-image {
+    width: 150px;
+    height: auto;
+    transition: transform 0.3s ease;
+}
+
+.card-image:hover {
+    transform: scale(1.5);
+    z-index: 10;
+}
+
+.card-info ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    text-align: center;
 }
